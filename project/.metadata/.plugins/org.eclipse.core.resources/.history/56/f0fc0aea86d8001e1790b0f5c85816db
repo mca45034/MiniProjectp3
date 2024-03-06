@@ -1,0 +1,62 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="com.minapp.pojo.Employee"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>update employee</title>
+</head>
+<body>
+<%
+Employee e=(Employee)session.getAttribute("employee");
+%>
+<jsp:include page="/jsp/header.jsp"></jsp:include>
+
+<h3>update profile</h3>
+<form action="/MiniAppProject/employeec" method="post">
+<input type="hidden" name="action" value="updateemp">
+<table>
+	<tr>
+		<td><label>Employee Id</label></td>
+		<td><input type="text" name="empid" value="<%=e.getEmpid() %>"  readonly="readonly"><td>
+	</tr>
+	<tr>
+		<td><label>Employee Name</label></td>
+		<td><input type="text" name="empname" value="<%=e.getEmpname()%>"></td>
+	</tr>
+	<tr>
+		<td><label>Employee Email</label></td>
+		<td><input type="text" name="empemail" value="<%=e.getEmpemail()%>"></td>
+	</tr>
+	<tr>
+		<td><label>Employee Contact</label></td>
+		<td><input type="text" name="empcontact" value="<%=e.getEmpcontact()%>"></td>
+	</tr>
+	<tr>
+		<td><label>Employee Designation</label></td>
+		<td>
+		<select name="empdesignation"  class="form-select" >
+					<option><%=e.getEmpdesignation() %></option>
+					<option>Java Developer</option>
+					<option>Python Developer</option>
+					<option>Manual Tester</option>
+					<option>Automation Tester</option>
+					<option>Data Analytics</option>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td><label>Employee Salary</label></td>
+		<td><input type="text" name="empsal" value="<%=e.getEmpsal()%>"></td>
+	</tr>
+	<tr>
+		<td><label>Employee Password</label></td>
+		<td><input type="text" name="emppass" value="<%=e.getEmppass()%>"></td>
+	</tr>
+	<tr>
+		<td><button class="btn btn-success">update</button></td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

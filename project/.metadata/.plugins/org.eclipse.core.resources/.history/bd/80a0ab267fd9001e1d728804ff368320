@@ -1,0 +1,30 @@
+package com.rays.controller;
+
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+
+import com.rays.Interface.EmployeeDao;
+import com.rays.bean.Employee;
+import com.rays.model.EmployeeDaoImpl;
+@WebServlet("/EmployeeList")
+public class EmployeeList extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	PrintWriter out;
+	boolean result;
+	private int empid;
+	private String empname;
+	private String empemail;
+	private String empcontact;
+	private String empdesignation;
+	private double empsal;
+	private String emppass;
+	String action;
+	Employee emp;
+	EmployeeDao edao = new EmployeeDaoImpl();
+	RequestDispatcher rd;
+
+
+}

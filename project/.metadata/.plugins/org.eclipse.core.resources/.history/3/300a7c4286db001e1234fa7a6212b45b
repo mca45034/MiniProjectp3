@@ -1,0 +1,157 @@
+package com.rays.controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.rays.dto.EmployeDTO;
+import com.rays.model.EmployeeModelImpl;
+
+@WebServlet("/EmployeCtl")
+public class EmployeCtl extends HttpServlet {
+	public static final String OP_SAVE = "save";
+	public static final String OP_CANCEL = "cancel";
+	public static final String OP_UPDATE = "update";
+	public static final String OP_RESET = "reset";
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		int ids = Integer.parseInt(req.getParameter("id"));
+		System.out.println("doget chali.......");
+		if (ids > 0) {
+			EmployeDTO dto = new EmployeDTO();
+			EmployeeModelImpl model = new EmployeeModelImpl();
+
+			System.out.println("ids me ander aya......");
+			dto = model.showEmployeeById(ids);
+			req.setAttribute("dto", dto);
+			RequestDispatcher rd = req.getRequestDispatcher("EmployeView.jsp");
+			rd.forward(req, resp);
+
+		}
+		RequestDispatcher rd = req.getRequestDispatcher("EmployeView.jsp");
+		rd.forward(req, resp);
+
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("dopost chalii....");
+		String op = (String) req.getParameter("operation");
+		System.out.println(op);
+
+		String ename = req.getParameter("ename");
+		String eemail = req.getParameter("eemail");
+		String econtect = req.getParameter("econtect");
+		String edesignation = req.getParameter("edesignation");
+		int esal = Integer.parseInt(req.getParameter("esal"));
+		String epass = req.getParameter("epass");
+
+		if (OP_SAVE.equalsIgnoreCase(op)) {
+			System.out.println(ename);
+			System.out.println(eemail);
+			// System.out.println(id);
+
+			EmployeDTO dto = new EmployeDTO();
+			// dto.setEmpId(id);
+			dto.setEmpName(ename);
+			dto.setEmpEmail(eemail);
+			dto.setEmpContect(econtect);
+			dto.setEmpDestignation(edesignation);
+			dto.setSalry(esal);
+			dto.setEmpPass(epass);
+			EmployeeModelImpl model = new EmployeeModelImpl();
+			System.out.println("yha tk aai...");
+
+			System.out.println("save method chali....");
+			model.addEmployee(dto);
+			req.setAttribute("msg", "User Insert successfully.....!!!!");
+			RequestDispatcher rd = req.getRequestDispatcher("EmployeView.jsp");
+			rd.forward(req, resp);
+
+		} else if (OP_UPDATE.equalsIgnoreCase(op)) {
+
+			int id = Integer.parseInt(req.getParameter("id"));
+			
+			System.out.println("id >>>>> " + id);
+
+			if (id > 0) {
+
+				EmployeDTO dto = new EmployeDTO();
+				dto.setEmpId(id);
+				dto.setEmpName(ename);
+				dto.setEmpEmail(eemail);
+				dto.setEmpContect(econtect);
+				dto.setEmpDestignation(edesignation);
+				dto.setSalry(esal);
+				dto.setEmpPass(epass);
+				EmployeeModelImpl model = new EmployeeModelImpl();
+				System.out.println("yha tk aai...");
+
+				System.out.println("save method chali....");
+				model.updateEmployee(dto);
+				req.setAttribute("msg", "User Update successfully.....!!!!");
+				RequestDispatcher rd = req.getRequestDispatcher("EmployeView.jsp");
+				rd.forward(req, resp);
+
+			}
+
+		} else if (OP_CANCEL.equalsIgnoreCase(op)) {
+			resp.sendRedirect("EmployeeList");
+
+		}
+		if (OP_RESET.equalsIgnoreCase(op)) {
+			System.out.println("reset chalii... chali...");
+			RequestDispatcher rd = req.getRequestDispatcher("EmployeView.jsp");
+			rd.forward(req, resp);
+		}
+
+		RequestDispatcher rd = req.getRequestDispatcher("EmployeView.jsp");
+		rd.forward(req, resp);
+
+	}
+
+}
+
+//if(OP_SAVE.equalsIgnoreCase(op) || OP_UPDATE.equalsIgnoreCase(op)) {
+//int id=Integer.parseInt(req.getParameter("id"));
+//String ename=(String)req.getParameter("ename");
+//String eemail=(String)req.getParameter("eemail");
+//String econtect=(String)req.getParameter("econtect");
+//String edesignation=(String)req.getParameter("edesignation");
+//int esal=Integer.parseInt(req.getParameter("esal"));
+//String epass=(String)req.getParameter("epass");
+//System.out.println(ename);
+//System.out.println(eemail);
+//EmployeDTO dto=new EmployeDTO();
+//dto.setEmpId(id);
+//dto.setEmpName(ename);
+//dto.setEmpEmail(eemail);
+//dto.setEmpContect(econtect);
+//dto.setSalry(esal);
+//dto.setEmpPass(epass);
+//EmployeeModelImpl model=new EmployeeModelImpl();
+//if(id>0) {
+//	model.updateEmployee(dto);
+//	req.setAttribute("dto", dto);
+//	req.setAttribute("msg", "User update successfully.....!!!!");
+//	RequestDispatcher rd = req.getRequestDispatcher("UserRagistration.jsp");
+//	rd.forward(req, resp);
+//	
+//}
+//else {
+//	
+//	
+//	model.addEmployee(dto);
+//	req.setAttribute("msg", "User Insert successfully.....!!!!");
+//	RequestDispatcher rd = req.getRequestDispatcher("UserRagistration.jsp");
+//	rd.forward(req, resp);
+//
+//}
+//}

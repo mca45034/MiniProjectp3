@@ -1,0 +1,171 @@
+package com.rays.model;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.*;
+import com.rays.Interface.EmployeeDao;
+import com.rays.bean.Employee;
+import com.rays.utility.DBConnection;
+
+public class EmployeeDaoImpl implements EmployeeDao {
+
+	Connection conn;
+	PreparedStatement ps;
+	ResultSet rs;
+	String sql;
+	int result;
+	@Override
+	public boolean addEmployee(Employee emp) {
+		// TODO Auto-generated method stub
+		try {
+			conn=DBConnection.getConnection();
+			sql="insert into employee (empid,empname,empemail,empcontact,empdesignation,empsal,emppass)values(?,?,?,?,?,?,?)";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, emp.getEmpid());
+			ps.setString(2, emp.getEmpname());
+			ps.setString(3, emp.getEmpemail());
+			ps.setString(4, emp.getEmpcontact());
+			ps.setString(5, emp.getEmpdesignation());
+			ps.setDouble(6, emp.getEmpsal());
+			ps.setString(7, emp.getEmppass());
+			result=ps.executeUpdate();
+			if(result>0)
+				return true;
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateEmployee(Employee emp) {
+		// TODO Auto-generated method stub
+		try {
+			conn=DBConnection.getConnection();
+			System.out.println("add method runing...!!!!!");
+			sql="update employee  set empname=?,empemail=?,empcontact=?,empdesignation=?,empsal=?,emppass=? where empid=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1, emp.getEmpname());
+			ps.setString(2, emp.getEmpemail());
+			ps.setString(3, emp.getEmpcontact());
+			ps.setString(4, emp.getEmpdesignation());
+			ps.setDouble(5, emp.getEmpsal());
+			ps.setString(6, emp.getEmppass());
+			ps.setInt(7, emp.getEmpid());
+			result=ps.executeUpdate();
+			if(result>0)
+				return true;
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteEmployee(int empid) {
+		// TODO Auto-generated method stub
+		try {
+			conn=DBConnection.getConnection();
+			sql="delete from employee where empid=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, empid);
+			result=ps.executeUpdate();
+			if(result>0)
+				return true;
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public List<Employee> showEmpList() {
+		// TODO Auto-generated method stub
+		List<Employee>elist=new ArrayList<Employee>();
+		try {
+			conn=DBConnection.getConnection();
+			sql="select *from employee";
+			ps=conn.prepareStatement(sql);
+			rs=ps.executeQuery();
+			
+			while(rs.next()) {
+				Employee e=new Employee();
+				e.setEmpid(rs.getInt(1));
+				e.setEmpname(rs.getString(2));
+				e.setEmpemail(rs.getString(3));
+				e.setEmpcontact(rs.getString(4));
+				e.setEmpdesignation(rs.getString(5));
+				e.setEmpsal(rs.getDouble(6));
+				e.setEmppass(rs.getString(7));
+				elist.add(e);
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return elist;
+	}
+
+	@Override
+	public Employee showEmployeeById(int empid) {
+		// TODO Auto-generated method stub
+		Employee emp=new Employee();
+		try {
+			conn=DBConnection.getConnection();
+			sql="select *from employee where empid=?";
+			ps=conn.prepareStatement(sql);
+			ps.setInt(1, empid);
+			rs=ps.executeQuery();
+			
+			if(rs.next()) {
+				
+				emp.setEmpid(rs.getInt(1));
+				emp.setEmpname(rs.getString(2));
+				emp.setEmpemail(rs.getString(3));
+				emp.setEmpcontact(rs.getString(4));
+				emp.setEmpdesignation(rs.getString(5));
+				emp.setEmpsal(rs.getDouble(6));
+				emp.setEmppass(rs.getString(7));
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return emp;
+	}
+
+	@Override
+	public Employee showEmployeeByEmail(String emailid) {
+		// TODO Auto-generated method stub
+		Employee emp=new Employee();
+		try {
+			conn=DBConnection.getConnection();
+			sql="select *from employee where empemail=?";
+			ps=conn.prepareStatement(sql);
+			ps.setString(1,emailid );
+			rs=ps.executeQuery();
+			
+			if(rs.next()) {
+				
+				emp.setEmpid(rs.getInt(1));
+				emp.setEmpname(rs.getString(2));
+				emp.setEmpemail(rs.getString(3));
+				emp.setEmpcontact(rs.getString(4));
+				emp.setEmpdesignation(rs.getString(5));
+				emp.setEmpsal(rs.getDouble(6));
+				emp.setEmppass(rs.getString(7));
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return emp;
+	}
+
+}

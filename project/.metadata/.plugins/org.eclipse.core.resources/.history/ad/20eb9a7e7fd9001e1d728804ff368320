@@ -1,0 +1,117 @@
+package com.rays.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.rays.Interface.EmployeeDao;
+import com.rays.bean.Employee;
+import com.rays.model.EmployeeDaoImpl;
+@WebServlet("/EmployeeList")
+public class EmployeeList extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	PrintWriter out;
+	boolean result;
+	private int empid;
+	private String empname;
+	private String empemail;
+	private String empcontact;
+	private String empdesignation;
+	private double empsal;
+	private String emppass;
+	String action;
+	Employee emp;
+	EmployeeDao edao = new EmployeeDaoImpl();
+	RequestDispatcher rd;
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	out = response.getWriter();
+	
+	response.setContentType("text/html");
+	
+	HttpSession session = request.getSession();
+	
+	action = request.getParameter("action");
+
+	// deleted by====
+
+	if (action != null && action.equalsIgnoreCase("delete")) {
+		
+		empid = Integer.parseInt(request.getParameter("eid"));
+		
+		result = edao.deleteEmployee(empid);
+		
+		if (result) {
+			
+			List<Employee> elist = edao.showEmpList();
+			
+			if (!elist.isEmpty()) {
+				
+				session.setAttribute("emplist", elist);
+				
+				request.setAttribute("msg", "employee record is deleted");
+				
+				rd = request.getRequestDispatcher("showEmplist.jsp");
+				
+				rd.forward(request, response);
+				
+			} else {
+				
+				request.setAttribute("msg", "Employee list is empty");
+				
+				rd = request.getRequestDispatcher("showEmplist.jsp");
+				
+				rd.forward(request, response);
+			}
+		} else {
+			request.setAttribute("msg", "employee record is not deleted");
+			rd = request.getRequestDispatcher("showEmplist.jsp");
+			// rd.include(request, response);
+			rd.forward(request, response);
+		}
+	} // delete operation closed
+	if (action != null && action.equalsIgnoreCase("edit")) {
+		empid = Integer.parseInt(request.getParameter("eid"));
+		emp = edao.showEmployeeById(empid);
+		if (emp != null) {
+			session.setAttribute("employee", emp);
+			rd = request.getRequestDispatcher("updateEmployee.jsp");
+			rd.forward(request, response);
+		}
+	} // edit operation closed
+
+	if (action != null && action.equalsIgnoreCase("editbyemail")) {
+		empemail = request.getParameter("email");
+		emp = edao.showEmployeeByEmail(empemail);
+		if (emp != null) {
+			session.setAttribute("employee", emp);
+			rd = request.getRequestDispatcher("updateEmployee.jsp");
+			rd.forward(request, response);
+		}
+	} // edit operation closed
+	else {
+		List<Employee> elist = edao.showEmpList();
+		if (!elist.isEmpty()) {
+			session.setAttribute("emplist", elist);
+			response.sendRedirect("showEmplist.jsp");
+		} else {
+			request.setAttribute("msg", "Employee list is empty");
+			rd = request.getRequestDispatcher("showEmplist.jsp");
+			// rd.include(request, response);
+			rd.forward(request, response);
+		}
+	} // show list closed
+}
+
+}
+
+
+}

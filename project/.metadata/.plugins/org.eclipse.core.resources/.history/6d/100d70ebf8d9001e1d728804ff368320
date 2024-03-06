@@ -1,0 +1,82 @@
+package com.rays.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.rays.dto.EmployeDTO;
+import com.rays.model.EmployeeModelImpl;
+@WebServlet("/EmployeeList")
+public class EmployeeList extends HttpServlet{
+	public static final String OP_DELETE = "delete";
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("doget chali...");
+		int pageNo=1;
+		int pageSize=10;
+		EmployeDTO dto=new EmployeDTO();
+		EmployeeModelImpl model=new EmployeeModelImpl();
+		List list=model.showEmpList(dto,pageNo,pageSize);
+		req.setAttribute("list", list);
+		req.setAttribute("pageNo", pageNo);
+		req.setAttribute("pageSize", pageSize);
+		RequestDispatcher rd=req.getRequestDispatcher("EmployeeListView.jsp");
+		rd.forward(req, resp);
+		
+	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		List list;
+		List nextList = null;
+
+		int pageNo = 1;
+		int pageSize = 10;
+		pageNo = (pageNo == 0) ? 1 : pageNo;
+
+		pageSize = (pageSize == 0) ? 10 : pageSize;
+		String op=(String)req.getParameter("operation");
+		System.out.println(op+" mila.......!!!!!!");
+		EmployeDTO dto=new EmployeDTO();
+		String[] ids = req.getParameterValues("ids");
+		EmployeeModelImpl model = new EmployeeModelImpl();
+		
+
+		if (OP_DELETE.equalsIgnoreCase(op)) {
+			pageNo = 1;
+			if (ids != null && ids.length > 0) {
+				EmployeDTO deletebean = new EmployeDTO();
+				for (String id : ids) {
+					
+			
+						model.deleteEmployee(deletebean);
+					req.setAttribute("dto", "Order is Deleted Successfully");
+
+				}
+			} else {
+				req.setAttribute("msg", "Select at least one record");
+			}
+		}
+	
+
+			list = model.showEmpList(dto, pageNo, pageSize);
+
+
+			req.setAttribute("nextlist", nextList.size());
+
+	
+
+			req.setAttribute("list", list);
+			req.setAttribute("pageNo", pageNo);
+			req.setAttribute("pageSize", pageSize);
+			RequestDispatcher rd=req.getRequestDispatcher("EmployeeListView.jsp");
+			rd.forward(req, resp);
+	}
+
+}

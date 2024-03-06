@@ -1,0 +1,54 @@
+<%@page import="com.rays.bean.Employee"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" 
+ %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Employee list</title>
+</head>
+<body>
+<%
+List<Employee>elist=(List<Employee>)session.getAttribute("emplist");
+String msg=(String)request.getAttribute("msg");
+if(msg!=null){	
+%>
+
+
+<%-- <script>alert("<%=msg%>")</script> --%>
+<%} %>
+<%-- <jsp:include page="header.jsp"></jsp:include> --%>
+<%@ include file="header.jsp" %>
+
+<h1>Employee List</h1>
+<table class="table table-striped ">
+	<tr>
+		<th>Employee Id</th>
+		<th>Employee Name</th>
+		<th>Employee Email</th>
+		<th>Employee Contact</th>
+		<th>Employee Designation</th>
+		<th>Employee Salary</th>
+		<th>Employee Password</th>
+		<th colspan=2>Operations</th>
+	</tr>
+	
+	<%for(Employee e:elist){ %>
+	<tr>
+		<td><%=e.getEmpid()%></td>
+		<td><%=e.getEmpname()%></td>
+		<td><%=e.getEmpemail()%></td>
+		<td><%=e.getEmpcontact()%></td>
+		<td><%=e.getEmpdesignation()%></td>
+		<td><%=e.getEmpsal()%></td>
+		<td><%=e.getEmppass() %></td>
+		<td><a class="btn btn-success" href="employeec?action=edit&eid=<%=e.getEmpid()%>">update</a></td>
+		<td><a class="btn btn-danger" href="employeec?action=delete&eid=<%=e.getEmpid()%>
+		"onclick="return function(){confirm('Are you sure do want to delete this record??'))}">delete</a></td>
+	</tr>
+	<%} %>
+</table>
+</body>
+</html>

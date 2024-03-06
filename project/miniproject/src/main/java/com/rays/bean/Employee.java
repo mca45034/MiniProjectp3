@@ -1,0 +1,105 @@
+package com.rays.bean;
+
+public class Employee {
+
+	private int empid;
+	private String empname;
+	private String empemail;
+	private String empcontact;
+	private String empdesignation;
+	private double empsal;
+	private String emppass;
+	public Employee() {
+		super();
+	}
+	public Employee( String empname, String empemail, String empcontact, String empdesignation,
+			double empsal,String emppass,int empid) {
+		super();
+		
+		this.empname = empname;
+		this.empemail = empemail;
+		this.empcontact = empcontact;
+		this.empdesignation = empdesignation;
+		this.empsal = empsal;
+		this.emppass=emppass;
+		this.empid = empid;
+	}
+
+	public Employee(String empname, String empemail, String empcontact, String empdesignation, double empsal,String emppass) {
+		super();
+		this.empname = empname;
+		this.empemail = empemail;
+		this.empcontact = empcontact;
+		this.empdesignation = empdesignation;
+		this.empsal = empsal;
+		this.emppass=emppass;
+	}
+
+	
+
+	public int getEmpid() {
+		return empid;
+	}
+
+	public void setEmpid(int empid) {
+		this.empid = empid;
+	}
+
+	public String getEmpname() {
+		return empname;
+	}
+
+	public void setEmpname(String empname) {
+		this.empname = empname;
+	}
+
+	public String getEmpemail() {
+		return empemail;
+	}
+
+	public void setEmpemail(String empemail) {
+		this.empemail = empemail;
+	}
+
+	public String getEmpcontact() {
+		return empcontact;
+	}
+
+	public void setEmpcontact(String empcontact) {
+		this.empcontact = empcontact;
+	}
+
+	public String getEmpdesignation() {
+		return empdesignation;
+	}
+
+	public void setEmpdesignation(String empdesignation) {
+		this.empdesignation = empdesignation;
+	}
+
+	public double getEmpsal() {
+		return empsal;
+	}
+
+	public void setEmpsal(double empsal) {
+		this.empsal = empsal;
+	}
+
+	
+	public String getEmppass() {
+		return emppass;
+	}
+
+	public void setEmppass(String emppass) {
+		this.emppass = emppass;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [empid=" + empid + ", empname=" + empname + ", empemail=" + empemail + ", empcontact="
+				+ empcontact + ", empdesignation=" + empdesignation + ", empsal=" + empsal + "]";
+	}
+	
+	
+	
+}
